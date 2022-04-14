@@ -55,7 +55,7 @@ include_once "navbar.php";
      
 
     $books = [];
-    $products_page = 6;
+    $products_page =6;
     $page = 1;
     if (isset($_GET['page'])) {
         $page = $_GET['page'];
@@ -77,35 +77,44 @@ include_once "navbar.php";
     if(isset($_POST['filter'])){
         
         $sql = "SELECT * FROM books WHERE ";
+        $and = "";
         if(isset($_POST['category'])){
             $category_set = implode(",", $_POST['category']);
             $sql.= " ( category_id IN(" . $category_set." ))";
+            $and = " AND ";
         }
         if(isset($_POST['price-min']) && isset($_POST['price-max']) && $_POST['price-min'] != "" && $_POST['price-max'] != ""){
-            $sql.= " AND (  price BETWEEN ".$_POST['price-min']." AND ".$_POST['price-max']." ) ";
+            $sql.= $and . "(  price BETWEEN ".$_POST['price-min']." AND ".$_POST['price-max']." ) ";
+            $and = " AND ";
         }else{
             if(isset($_POST['price-max']) && $_POST['price-max'] != ""){
-                $sql .= " AND ( price <= ". $_POST['price-max'] . ")";
+                $sql .= $and . " ( price <= ". $_POST['price-max'] . ")";
+                $and = " AND ";
             }
             if(isset($_POST['price-min']) && $_POST['price-min'] != ""){
-                $sql .= " AND (  price >= ". $_POST['price-min'] . ") ";
-    
+                $sql .= $and . " (  price >= ". $_POST['price-min'] . ") ";
+                $and = " AND ";
             }
         }
         if(isset($_POST['year-min']) && isset($_POST['year-max']) && $_POST['year-min'] != "" && $_POST['year-max'] != ""){
-            $sql.= " AND (  year BETWEEN ".$_POST['year-min']." AND ".$_POST['year-max']." ) ";
+            $sql.= $and . "  (  year BETWEEN ".$_POST['year-min']." AND ".$_POST['year-max']." ) ";
+            $and = " AND ";
         }else{
             if(isset($_POST['year-max']) && $_POST['year-max'] != ""){
-                $sql .= " AND ( year <= ". $_POST['year-max'] . ")";
+                $sql .= $and . " ( year <= ". $_POST['year-max'] . ")";
+                $and = " AND ";
             }
             if(isset($_POST['year-min']) && $_POST['year-min'] != ""){
-                $sql .= " AND (  year >= ". $_POST['year-min'] . ") ";
+                $sql .= $and . "  (  year >= ". $_POST['year-min'] . ") ";
+                $and = " AND ";
     
             }
+            
         }
         if(isset($_POST['edition']) && $_POST['edition'] != "" && $_POST['edition'] != "0"){
-            $sql.= " AND (  edition = ". $_POST['edition'] . ") ";
+            $sql.= $and . "  (  edition = ". $_POST['edition'] . ") ";
         }
+        echo $sql;
         $res = mysqli_query($con, $sql);
         if($res){
             $totalNumberOfBooks = mysqli_num_rows($res);
@@ -122,9 +131,6 @@ include_once "navbar.php";
             }
         }
   
-        echo $sql;
-
-
     }else if(isset($_GET['category'])){
         $category = $_GET['category'];
         $category_search = "SELECT category_id FROM category where title  = '$category'";
@@ -289,30 +295,46 @@ include_once "navbar.php";
                             </div>
                             <ul class="p-2 d-flex flex-column  px-3">
                                 <?php foreach($categories as $categoryData){?>
-                                <li><input type="checkbox" name="category[]" value="<?php echo $categoryData['category_id']?>"> <span><?php echo $categoryData['title']?></span></li>
-                                <?php } ?>
+                                <li><input type="checkbox" 
+                                    <?php if(isset($_POST['filter']) && isset($_POST['category']) 
+                                             && in_array($categoryData['category_id'], $_POST['category'])){
+                                        echo "checked";
+                                    }?>
+                                     name="category[]" value="<?php echo $categoryData['category_id']?>"> <span><?php echo $categoryData['title']?></span></li>
+                                <?php $i++; } ?>
                             </ul>
                         </div>
                         <div class="border-bottom p-3">
                             <label class="control-label">Price Range:</label>
                             <div class="d-flex" >
-                                <input type="text" name="price-min" class="form-control"  placeholder="Min"> 
-                                <input type="text" name="price-max" class="form-control"  placeholder="Max">
+                                <input type="text"  name="price-min" class="form-control"  placeholder="Min"
+                                    value="<?php echo (isset($_POST['price-min']) ? $_POST['price-min'] : "") ;?>" 
+                                > 
+                                <input type="text" name="price-max" class="form-control"  placeholder="Max"
+                                    value="<?php echo (isset($_POST['price-max']) ? $_POST['price-max'] : "") ;?>" 
+                                >
                             </div>
                             
                         </div>
                         <div class="border-bottom p-3">
                             <label class="control-label">Publishing year:</label>
                             <div class="d-flex" >
-                                <input type="text" name="year-min" class="form-control w-50"  placeholder="Min-Year"> 
-                                <input type="text" name="year-max" class="form-control w-50"  placeholder="Max-Year">
+                                <input type="text" name="year-min" class="form-control w-50"  placeholder="Min-Year"
+                                    value="<?php echo (isset($_POST['year-min']) ? $_POST['year-min'] : "") ;?>" 
+                                > 
+                                <input type="text" name="year-max" class="form-control w-50"  placeholder="Max-Year"
+                                    value="<?php echo (isset($_POST['year-max']) ? $_POST['year-max'] : "") ;?>" 
+                                >
                             </div>
                         </div>  
                         <div class="border-bottom p-3">
                             <label class="control-label">Edition:</label>
                             <div class="d-flex" >
-                                <input type="range" value="0" min="0" max="10" name="edition"  oninput="this.nextElementSibling.value = this.value">
-                                <output class="mx-5" >0</output>
+                                <input type="range" min="0" max="10" name="edition"  oninput="this.nextElementSibling.value = this.value"
+                                    value="<?php echo (isset($_POST['edition']) ? $_POST['edition'] : "0") ;?>"
+                                
+                                >
+                                <output class="mx-5" ><?php echo (isset($_POST['edition']) ? $_POST['edition'] : "0") ;?></output>
                             </div>
                         </div>  
 
@@ -331,6 +353,16 @@ include_once "navbar.php";
                             || isset($_POST['year']) || isset($_POST['price']) ){
                             if(count($books) == 0){
                                 echo "<h3 class='text-center m-5'>No books found for 'advanced search' </h3>";
+                            }
+                        }
+                        if(isset($_POST['filter'])){
+                            if(count($books) == 0){
+                                echo "<h3 class='text-center m-5'>No books found </h3>";
+                            }
+                        }
+                        if(isset($_GET['category'])){
+                            if(count($books) == 0){
+                                echo "<h3 class='text-center m-5'>No books found for '". ucfirst($_GET['category']) ."' </h3>";
                             }
                         }
                         
