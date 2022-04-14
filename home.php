@@ -227,7 +227,7 @@ include_once "navbar.php";
             while ($row = mysqli_fetch_assoc($res)) {
                 $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                 $index++;
             }
         } 
@@ -370,34 +370,35 @@ include_once "navbar.php";
                         for($i= 0; $i < count($books); $i++){ ?>
                         
                         <div class="col-4 my-2">
-                            <div class="card product-item">
+                            <div class="w-100">
                                 <!-- Product image-->
-                                <img class=" card-image book-cover " src="<?php echo $books[$i]->coverImage ?>" width="350" height="400" alt="...">
+                                <div class="w-100">
+                                    <img src="<?php echo $books[$i]->coverImage; ?>" class="w-100" alt="">
+                                </div>
                                 <!-- Product details-->
                                 <div class="card-body">
-                                    <div class="">
-                                        <!-- Product name-->
-                                        <h5 class="fw-bolder"> <?php echo $books[$i]->title ?> 
-                                           
-                                        <span> <?php  $averageRating = $books[$i]->rating; ?>
+                                   
+                                    <h4 class="fw-bolder mt-2"> <?php echo $books[$i]->title ?>  </h4>
+                                    <span> <?php  $averageRating = $books[$i]->rating; ?>
 
-                                            <div class="d-flex"> 
-                                            <?php for($j = 0; $j < floor($averageRating); $j++){  ?>
-                                                <span class="fa fa-star star-active ml-3"></span>
-                                                <?php }for($j = 0; $j < 5-floor($averageRating); $j++){ ?>
-                                                    <span class="fa fa-star star-inactive ml-3"></span>
-                                                <?php }?>
-                                            </div>
-                                        
-                                        
-                                        </span>
+                                        <div class="d-flex"> 
+                                        <?php for($j = 0; $j < floor($averageRating); $j++){  ?>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <?php }for($j = 0; $j < 5-floor($averageRating); $j++){ ?>
+                                                <span class="fa fa-star star-inactive ml-3"></span>
+                                            <?php }?>
+                                        </div>
                                     
-                                        </h5>
-                                        <!-- Product price-->
-                                        <span><b>Price: </b><strong><?php echo $books[$i]->price * $_SESSION['rate'] ."</strong> ". $_SESSION['currency'] ?> </span>
-                                    </div>
-                                    <p class="m-0"><small><?php echo $books[$i]->author ?></small></p>
-                                    <p class="m-0"><small>ISBN: <?php echo $books[$i]->book_number ?></small></p>
+                                    
+                                    </span>
+                                
+                                    </h5>
+                                    <!-- Product price-->
+                                    <span><b>Price: </b><strong><?php echo $books[$i]->price * $_SESSION['rate'] ."</strong> ". $_SESSION['currency'] ?> </span>
+                                  
+                                    <p class="m-0"><small>Edition: </small><?php echo $books[$i]->edition ?></p>
+                                    <p class="m-0"><?php echo $books[$i]->author ?></p>
+                                    <p class="m-0"><small>ISBN: </small> <?php echo $books[$i]->book_number ?></p>
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer  pt-0 border-top-0 bg-transparent">

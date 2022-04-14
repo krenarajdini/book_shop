@@ -34,37 +34,37 @@
     //Get reviews
     $review_sql = "SELECT * FROM reviews WHERE book_number = '$book_number'";
     $review_result = mysqli_query($con, $review_sql);
-    $reviews = array();
-    $stars_count = [0,0,0,0,0];
+    $reviewsForOne = array();
+    $stars_count_for_one = [0,0,0,0,0];
     while($row = mysqli_fetch_assoc($review_result)){
         //Get user name
         $user_sql = "SELECT * FROM user WHERE u_id = '".$row['user_id']."'";
         $user_result = mysqli_query($con, $user_sql);
         $user = mysqli_fetch_assoc($user_result);
         $row['user_name'] = $user['name'];
-        $reviews[] = $row;
-        $stars_count[$row['rating']-1]++;
+        $reviewsForOne [] = $row;
+        $stars_count_for_one[$row['rating']-1]++;
     }
-    $totalReviews = count($reviews);
-    if($totalReviews == 0){
-        $totalReviews = 1;
+    $totalReviewsForOne = count($reviewsForOne );
+    if($totalReviewsForOne == 0){
+        $totalReviewsForOne = 1;
     }else{
-        $totalReviews = count($reviews);
+        $totalReviewsForOne = count($reviewsForOne );
     }
 
     //Calculate stars rating
     $totalRating = 0;
-    foreach($reviews as $review){
+    foreach($reviewsForOne  as $review){
         $totalRating += $review['rating'];
     }
-    if($totalReviews > 0){
-        $averageRating = $totalRating/$totalReviews;
+    if($totalReviewsForOne > 0){
+        $averageRating = $totalRating/$totalReviewsForOne;
     }else{
         $averageRating = 0;
     }
     $averageRating = round($averageRating, 1);
-    $averageRating = number_format($averageRating, 1);
-    echo $averageRating;
+    $averageRatingForOneBook = number_format($averageRating, 1);
+    echo  $averageRatingForOneBook;
 
     
     
@@ -87,18 +87,51 @@
             while ($row = mysqli_fetch_assoc($res)) {
                 $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                 $index++;
             }
         } 
 
+        $i = 0;
+        for($i = 0; $i < count($books); $i++){
+            //Get reviews
+            $book_name = $books[$i]->book_number;
+            $review_sql = "SELECT * FROM reviews WHERE book_number = '$book_name'";
+            $review_result = mysqli_query($con, $review_sql);
+            $reviews = array();
+            $stars_count = [0,0,0,0,0];
+            while($row = mysqli_fetch_assoc($review_result)){
+                $reviews[] = $row;
+                $stars_count[$row['rating']-1]++;
+            }
+            $totalReviews = count($reviews);
+            if($totalReviews == 0){
+                $totalReviews = 1;
+            }else{
+                $totalReviews = count($reviews);
+            }
     
-   
+            //Calculate stars rating
+            $totalRating = 0;
+            foreach($reviews as $review){
+                $totalRating += $review['rating'];
+            }
+            if($totalReviews > 0){
+                $averageRating = $totalRating/$totalReviews;
+            }else{
+                $averageRating = 0;
+            }
+            $averageRating = round($averageRating, 1);
+            $averageRating = number_format($averageRating, 1);
+            $books[$i] = (object) array_merge( (array)$books[$i], array( 'rating' => $averageRating ) );
+        }
+    
+     
      ?>
 <section>
-    <div class="container px-4 px-lg-5 my-5">
+    <div class="container px-4 px-lg-5">
         
-        <div class="row py-5 align-items-center">
+        <div class="row pt-5 align-items-start">
             <div class="col-md-6">
                 <img class="card-img-top mb-5 mb-md-0 " loading="lazy" id="display-img" src="<?php echo $book['cover_image']?>" width="250" height="500" alt="...">
                 <div class="mt-2 row gx-2 gx-lg-3 row-cols-4 row-cols-md-3 row-cols-xl-4 justify-content-start">
@@ -140,13 +173,13 @@
                 <div class="row justify-content-left d-flex">
                     <div class="col-md-4 d-flex flex-column">
                         <div class="rating-box">
-                            <h1 class="pt-4"><?php echo $averageRating;?></h1>
+                            <h1 class="pt-4"><?php echo $averageRatingForOneBook;?></h1>
                             <p class="">out of 5</p>
                         </div>
                         <div> 
-                        <?php for($i = 0; $i < floor($averageRating); $i++){ ?>
+                        <?php for($i = 0; $i < floor($averageRatingForOneBook); $i++){ ?>
                             <span class="fa fa-star star-active ml-3">
-                            <?php }for($i = 0; $i < 5-floor($averageRating); $i++){ ?>
+                            <?php }for($i = 0; $i < 5-floor($averageRatingForOneBook); $i++){ ?>
                                 <span class="fa fa-star star-inactive ml-3">
                             <?php }?>
                          </div>
@@ -159,60 +192,60 @@
                                     <td class="rating-bar">
                                         <div class="bar-container">
                                         <div class="progress"> 
-                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count[4]/$totalReviews * 100 . '%';?>"></div>
+                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count_for_one[4]/ $totalReviewsForOne * 100 . '%';?>"></div>
                                         </div>
                                         </div>
                                     </td>
-                                    <td class="text-right"><?php echo $stars_count[4];?></td>
+                                    <td class="text-right"><?php echo $stars_count_for_one[4];?></td>
                                 </tr>
                                 <tr>
                                     <td class="rating-label">Good</td>
                                     <td class="rating-bar">
                                     <div class="progress"> 
-                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count[3]/$totalReviews * 100 . '%';?>"></div>
+                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count_for_one[3]/ $totalReviewsForOne * 100 . '%';?>"></div>
                                     </div>
                                     </td>
-                                    <td class="text-right"><?php echo $stars_count[3];?></td>
+                                    <td class="text-right"><?php echo $stars_count_for_one[3];?></td>
                                 </tr>
                                 <tr>
                                     <td class="rating-label">Average</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
                                         <div class="progress"> 
-                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count[2]/$totalReviews * 100 . '%';?>"></div>
+                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count_for_one[2]/ $totalReviewsForOne * 100 . '%';?>"></div>
                                          </div>
                                         </div>
                                     </td>
-                                    <td class="text-right"><?php echo $stars_count[2];?></td>
+                                    <td class="text-right"><?php echo $stars_count_for_one[2];?></td>
                                 </tr>
                                 <tr>
                                     <td class="rating-label">Poor</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
                                         <div class="progress"> 
-                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count[1]/$totalReviews * 100 . '%';?>"></div>
+                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count_for_one[1]/ $totalReviewsForOne * 100 . '%';?>"></div>
                                          </div>
                                         </div>
                                     </td>
-                                    <td class="text-right"><?php echo $stars_count[1];?></td>
+                                    <td class="text-right"><?php echo $stars_count_for_one[1];?></td>
                                 </tr>
                                 <tr>
                                     <td class="rating-label">Terrible</td>
                                     <td class="rating-bar">
                                         <div class="bar-container">
                                         <div class="progress"> 
-                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count[0]/$totalReviews * 100 . '%';?>"></div>
+                                            <div class="progress-bar bar-1" role="progressbar" style="width: <?php echo $stars_count_for_one[0]/ $totalReviewsForOne * 100 . '%';?>"></div>
                                         </div>
                                         </div>
                                     </td>
-                                    <td class="text-right"><?php echo $stars_count[0];?></td>
+                                    <td class="text-right"><?php echo $stars_count_for_one[0];?></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php foreach($reviews as $review){?>
+            <?php foreach($reviewsForOne as $review){?>
             <div class="card">
                 <div class="row d-flex">
                     <div class="d-flex flex-column">
@@ -283,20 +316,27 @@
         <div class="row justify-content-center">
             <?php
                 for($i= 0; $i < count($books); $i++){ ?>
-                <div class="col mb-5">
-                    <div class="card h-100 product-item">
+                <div class="col m-3">
+                    <div class="card-body ">
                         <!-- Product image-->
                         <img class="card-img-top w-100" src="<?php echo $books[$i]->coverImage ?>" alt="...">
                         <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder"><?php echo $books[$i]->title ?></h5>
-                                <!-- Product price-->
-                                                                <span><b>Price: </b><?php echo $books[$i]->price * $_SESSION['rate'] .' '. $_SESSION['currency'] ?></span>
-                                                            <p class="m-0"><small>By: <?php echo $books[$i]->author ?></small></p>
-                            </div>
+                        
+                        <div class="">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder"><?php echo $books[$i]->title ?></h5>
+                            <?php for($j = 0; $j < floor($books[$i]->rating); $j++){ ?>
+                            <span class="fa fa-star star-active "></span>
+                            <?php }for($j = 0; $j < 5-$books[$i]->rating; $j++){ ?>
+                                <span class="fa fa-star star-inactive"></span>
+                            <?php }?>
+                            </br>
+                            <!-- Product price-->
+                            <span><b>Price: </b><?php echo $books[$i]->price * $_SESSION['rate'] .' '. $_SESSION['currency'] ?></span>
+                            <p class="m-0"><small>By:</small> <?php echo $books[$i]->author ?></p>
+                            <p class="m-0"><small>Edition:</small> <?php echo $books[$i]->edition ?></p>
                         </div>
+                       
                         <!-- Product actions-->
                         <div class="card-footer  pt-0 border-top-0 bg-transparent">
                                 <div class="text-center d-flex justify-content-center">
