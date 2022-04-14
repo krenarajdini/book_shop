@@ -25,9 +25,8 @@
     if(isset($_POST['currency'])){
         $_SESSION['currency'] = $_POST['currency'];
         $_SESSION['rate'] = $_POST['rate'];
-       
-    }
-    else{
+
+    }else if(!isset($_SESSION['currency'])) {
         $_SESSION['currency'] = "USD";
         $_SESSION['rate'] = 1;
     }
@@ -83,7 +82,7 @@ ob_start();?>
                     </button>
                     
                     <button type="button" class="btn btn-light mx-1"><a href="orders.php"> <?php echo ucwords($_SESSION['name']) ?>  <img src="img\user_icon.png" alt="cart" width="25px" height="25px"></a></button>
-                    <button type="button" class="btn btn-light mx-1"><a href="login-user.php">Logout  <img src="img\logout_icon.png" alt="cart" width="25px" height="25px"></a></button>
+                    <button type="button" class="btn btn-light mx-1"><a href="logout-user.php">Logout  <img src="img\logout_icon.png" alt="cart" width="25px" height="25px"></a></button>
                 </div>
                 
         

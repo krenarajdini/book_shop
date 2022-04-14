@@ -125,7 +125,7 @@ include_once "navbar.php";
                 while($row = mysqli_fetch_assoc($res)){
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }
@@ -149,7 +149,7 @@ include_once "navbar.php";
             while ($row = mysqli_fetch_assoc($res)) {
                 $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                 $index++;
             }
         }  
@@ -167,7 +167,7 @@ include_once "navbar.php";
                 $index = 0;
                 while ($row = mysqli_fetch_assoc($res)) {
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 'price' => $row['price'] , 'book_number' => $row['book_number'],
-                    'description' => $row['description'],'coverImage' => $row['cover_image']];
+                    'description' => $row['description'],'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }  
@@ -210,7 +210,7 @@ include_once "navbar.php";
                 $index = 0;
                 while ($row = mysqli_fetch_assoc($res)) {
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 'price' => $row['price'] , 'book_number' => $row['book_number'],
-                    'description' => $row['description'],'coverImage' => $row['cover_image']];
+                    'description' => $row['description'],'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }  
