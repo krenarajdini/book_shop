@@ -8,6 +8,25 @@
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/view-product.css">
   
+    <style>
+    .toggledText {
+        height: 170px;
+        overflow: hidden;
+    }
+    
+    .toggledText.toggle {
+    height: auto;
+    }
+    
+    .readless-txt,
+    .toggledText.toggle~#readmore span.readmore-txt {
+        display: none;
+    }
+    
+    .toggledText.toggle~#readmore span.readless-txt {
+        display: block;
+    }
+    </style>
 </head>
 <body style="height: auto;">
 <?php 
@@ -133,7 +152,7 @@
         
         <div class="row pt-5 align-items-start">
             <div class="col-md-6">
-                <img class="card-img-top mb-5 mb-md-0 " loading="lazy" id="display-img" src="<?php echo $book['cover_image']?>" width="250" height="500" alt="...">
+                <img class="card-img-top mb-5 mb-md-0 " loading="lazy" id="display-img" src="<?php echo $book['cover_image']?>" width="255" height="500" alt="...">
                 <div class="mt-2 row gx-2 gx-lg-3 row-cols-4 row-cols-md-3 row-cols-xl-4 justify-content-start">
                     <div class="col">
                         <a href="" class="view-image active"><img src="<?php echo $book['cover_image']?>" loading="lazy" class="img-thumbnail" alt=""></a>
@@ -141,15 +160,15 @@
         	</div>
             </div>
                 <div class="col-md-6">
-                 <p class="display-4"><?php echo $book['title'] ?></p>
-                <div class="small mb-1">SKU: <?php echo $book['book_number'] ?></div>
-                <p class="m-0"><small>Author: <?php echo $book['author'] ?></small></p>
-                <div class="fs-5 mb-5">
+                <h1 class="display-6"><?php echo $book['title'] ?></h1>
+                <p class="m-0"><span>SKU: <?php echo $book['book_number'] ?></span></p>
+                <p class="m-0"><span>Author: <?php echo $book['author'] ?></span></p>
+                <div class="fs-2 mb-2">
                     <span id="price">Price: <?php echo $book['price'] * $_SESSION['rate'] .' '. $_SESSION['currency']  ?></span>
                     <br>
                 </div>
                 <form action="product-cart.php" method="POST">
-                    <div class="d-flex">
+                    <div class="d-flex ">
                         <button class="btn btn-outline-dark flex-shrink-0" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Add to cart
@@ -159,8 +178,21 @@
 
                     </div>
                 </form>
-                <p class="lead"></p><p style="margin-right: 0px; margin-bottom: 15px; margin-left: 0px; padding: 0px;"><?php echo $book['description'] ?></p><p></p>
-                
+                <div class="truncate">
+                    <div class="toggledText" id="toggledText">
+                        <?php echo $book['description'] ?>
+                    </div>
+                        <a href="view-product.php" id="readmore">
+                        <span class="readmore-txt text-primary">Read more...</span>
+                        <span class="readless-txt text-primary">Read Less</span></a>
+                </div>
+
+                <script>
+                    document.querySelector('#readmore').addEventListener("click", function(e) {
+                        e.preventDefault();
+                        document.querySelector('#toggledText').classList.toggle('toggle');
+                    });
+                </script>
             </div>
         </div>
     </div>

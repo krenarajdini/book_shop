@@ -61,7 +61,7 @@ ob_start();?>
                     </form>
 
                     <form class="m-0" action="<?php echo basename($_SERVER['REQUEST_URI']);?>" method="POST">
-                        <button class="btn <?php echo $_SESSION['currency']=="SAR"? "active":"";?> btn-outline-light mx-1" type="submit"><i class="fa fa-bitcoin"></i></button>
+                        <button class="btn <?php echo $_SESSION['currency']=="SAR"? "active":"";?> btn-outline-light mx-1" type="submit"><img src="img\qatar-riyal.png" width="20" height="20"></button>
                         <input type="hidden" name="currency" value="SAR">
                         <input type="hidden" name="rate" value="3.75">
 
@@ -88,11 +88,11 @@ ob_start();?>
         
 </nav>
 
-
 <?php if(str_contains($_SERVER['REQUEST_URI'],'home.php')){
 
 
     ?> 
+    
         <nav class="navbar category-bar fixed-top  mt-5 pt-2 px-3 px-lg-3  ">
             
                 

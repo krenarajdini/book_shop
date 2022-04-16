@@ -89,12 +89,12 @@ include_once("editprocess.php");
                                 <input type="text" name="email" class="form-control form w-100" disabled value="<?php echo $email;?>" required="">
                             </div>
                             <div class="form-group">
-                                <label for="password" class="control-label">New Password</label>
-                                <input type="password" name="password" class="form-control form"  placeholder="Enter value to change password">
+                                <label for="password" class="control-label" >New Password</label>
+                                <input type="password" name="password" class="form-control form"  placeholder="Enter value to change password" required>
                             </div>
                             <div class="form-group">
                                 <label for="cpassword" class="control-label">Current Password</label>
-                                <input type="password" name="cpassword" class="form-control form" placeholder="Enter value to change password">
+                                <input type="password" name="cpassword" class="form-control form" placeholder="Enter value to change password" required>
                                 <p class="control-label text-danger"> <?php echo array_key_exists("password-error-message", $errors) ?  $errors["password-error-message"] : "" ; ?></p>
                             </div>
                            

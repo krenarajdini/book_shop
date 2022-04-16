@@ -283,7 +283,8 @@ include_once "navbar.php";
                         </div>
                     </div>
                 </header>
-            <div class="row justify-content-center">
+                
+            <div class="row justify-content-center w-100 ">
                 
                 <div class="pl-4 col-2 ">
                     <form action="home.php" method="post">
@@ -396,9 +397,9 @@ include_once "navbar.php";
                                     <!-- Product price-->
                                     <span><b>Price: </b><strong><?php echo $books[$i]->price * $_SESSION['rate'] ."</strong> ". $_SESSION['currency'] ?> </span>
                                   
-                                    <p class="m-0"><small>Edition: </small><?php echo $books[$i]->edition ?></p>
-                                    <p class="m-0"><?php echo $books[$i]->author ?></p>
-                                    <p class="m-0"><small>ISBN: </small> <?php echo $books[$i]->book_number ?></p>
+                                    <p class="m-0">Edition: <?php echo $books[$i]->edition ?></p>
+                                    <p class="m-0">By: <?php echo $books[$i]->author ?></p>
+                                    <p class="m-0"><small>ISBN:  <?php echo $books[$i]->book_number ?></p></small>
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer  pt-0 border-top-0 bg-transparent">
