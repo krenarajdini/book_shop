@@ -120,15 +120,10 @@ passElement.onkeyup = function () {
   pass = passElement.value;
   confirmPass = confirmPassElement.value;
 
-  console.log(pass, confirmPass);
-  console.log(pass == confirmPass);
-  console.log(new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(pass));
-
   if (
     pass == confirmPass &&
     new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(pass)
   ) {
-    console.log(1.1);
     passElement.classList.remove("error-element");
     confirmPassElement.classList.remove("error-element");
     passErrorMessageElement.innerText = "";
@@ -137,8 +132,6 @@ passElement.onkeyup = function () {
     pass != confirmPass ||
     !new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(pass)
   ) {
-    console.log(1.2);
-
     passElement.classList.add("error-element");
     confirmPassElement.classList.add("error-element");
     passErrorMessageElement.innerHTML =
@@ -164,7 +157,6 @@ confirmPassElement.onkeyup = function () {
     pass == confirmPass &&
     new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
   ) {
-    console.log(2.1);
     confirmPassElement.classList.remove("error-element");
     passElement.classList.remove("error-element");
     passErrorMessageElement.innerText = "";
@@ -173,7 +165,6 @@ confirmPassElement.onkeyup = function () {
     pass != confirmPass ||
     !new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
   ) {
-    console.log(2.2);
     confirmPassElement.classList.add("error-element");
     passElement.classList.add("error-element");
     passErrorMessageElement.innerHTML =

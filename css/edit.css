@@ -48,3 +48,17 @@ input[type="text"]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.error-element {
+  border: 2px solid red;
+}
+
+.error-message {
+  margin-top: -10px;
+  font-size: 11px;
+  color: red;
+}
+.pass-error-message * {
+  margin: 0;
+  padding: 0;
+}
