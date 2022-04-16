@@ -86,7 +86,8 @@
                             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_0_length">
                                  </div></div>
                                     <div class="col-sm-12 col-md-6">
-                                    <div id="DataTables_Table_0_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table class="table table-stripped text-dark dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                    <div id="DataTables_Table_0_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12">
+                            <table class="table table-stripped text-dark dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
                                 <colgroup>
                                     <col width="10%">
                                     <col width="15">
@@ -99,20 +100,21 @@
                                 </thead>
                                 <tbody>
                                                                     
-                                                                    
-                                    <tr class="odd">
-                                        <?php foreach($orders as $order){ ?>
-                                            <td class="sorting_1"><?php echo  $order['order_id']?></td>
-                                            <td><?php echo $order['date'].' '.$order['time']?></td>
-                                            <td><a href="javascript:void(0)" class="view_order" data-id="8"><?php echo $order['transaction_id'] ?></a></td>
-                                            <td><?php echo $order['total'] * $_SESSION['rate'] .' '. $_SESSION['currency']?> </td>
-                                            <td class="text-center">
-                                                                                                    <span class="badge badge-light text-dark">Pending</span>
-                                                                                            </td>
-                                            </tr><tr class="even">
+                                                                  
+                                        <tr class="odd">
+                                            <?php foreach($orders as $order){ ?>
+                                                <td class="sorting_1"><?php echo  $order['order_id']?></td>
+                                                <td><?php echo $order['date'].' '.$order['time']?></td>
+                                                <td><a class="btn btn-outline-primary" href="buys.php?order_id=<?php echo  $order['order_id']?>"><?php echo $order['transaction_id'] ?></a></td>
+                                                <td><?php echo $order['total'] * $_SESSION['rate'] .' '. $_SESSION['currency']?> </td>
+                                                <td class="text-center">
+                                                    <span class="badge badge-light text-dark">Pending</span>
+                                                </td>
+                                        </tr>
+                                  
                                                 <?php } ?>
-                                            </tbody>
-                                            </table>
+                                </tbody>
+                                </table>
                                         <div class="row d-flex justify-content-center">
                                          <div  >
                                             <?php if($total_orders > 0){?>
