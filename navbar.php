@@ -25,9 +25,8 @@
     if(isset($_POST['currency'])){
         $_SESSION['currency'] = $_POST['currency'];
         $_SESSION['rate'] = $_POST['rate'];
-       
-    }
-    else{
+
+    }else if(!isset($_SESSION['currency'])) {
         $_SESSION['currency'] = "USD";
         $_SESSION['rate'] = 1;
     }
@@ -62,7 +61,7 @@ ob_start();?>
                     </form>
 
                     <form class="m-0" action="<?php echo basename($_SERVER['REQUEST_URI']);?>" method="POST">
-                        <button class="btn <?php echo $_SESSION['currency']=="SAR"? "active":"";?> btn-outline-light mx-1" type="submit"><i class="fa fa-bitcoin"></i></button>
+                        <button class="btn <?php echo $_SESSION['currency']=="SAR"? "active":"";?> btn-outline-light mx-1" type="submit"><img src="img\qatar-riyal.png" width="20" height="20"></button>
                         <input type="hidden" name="currency" value="SAR">
                         <input type="hidden" name="rate" value="3.75">
 
@@ -83,17 +82,17 @@ ob_start();?>
                     </button>
                     
                     <button type="button" class="btn btn-light mx-1"><a href="orders.php"> <?php echo ucwords($_SESSION['name']) ?>  <img src="img\user_icon.png" alt="cart" width="25px" height="25px"></a></button>
-                    <button type="button" class="btn btn-light mx-1"><a href="login-user.php">Logout  <img src="img\logout_icon.png" alt="cart" width="25px" height="25px"></a></button>
+                    <button type="button" class="btn btn-light mx-1"><a href="logout-user.php">Logout  <img src="img\logout_icon.png" alt="cart" width="25px" height="25px"></a></button>
                 </div>
                 
         
 </nav>
 
-
 <?php if(str_contains($_SERVER['REQUEST_URI'],'home.php')){
 
 
     ?> 
+    
         <nav class="navbar category-bar fixed-top  mt-5 pt-2 px-3 px-lg-3  ">
             
                 

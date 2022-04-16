@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/signup-user.css">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
+    <div class="container justify-content-center align-items-center">
+        <div class="row ">
             <div class="col-md-5 offset-md-4 form">
                 <form id="signup-form" action="signup-user.php" method="POST" autocomplete="">
                     <h2 class="text-center">Signup Form</h2>

@@ -55,7 +55,7 @@ include_once "navbar.php";
      
 
     $books = [];
-    $products_page = 6;
+    $products_page =6;
     $page = 1;
     if (isset($_GET['page'])) {
         $page = $_GET['page'];
@@ -77,35 +77,44 @@ include_once "navbar.php";
     if(isset($_POST['filter'])){
         
         $sql = "SELECT * FROM books WHERE ";
+        $and = "";
         if(isset($_POST['category'])){
             $category_set = implode(",", $_POST['category']);
             $sql.= " ( category_id IN(" . $category_set." ))";
+            $and = " AND ";
         }
         if(isset($_POST['price-min']) && isset($_POST['price-max']) && $_POST['price-min'] != "" && $_POST['price-max'] != ""){
-            $sql.= " AND (  price BETWEEN ".$_POST['price-min']." AND ".$_POST['price-max']." ) ";
+            $sql.= $and . "(  price BETWEEN ".$_POST['price-min']." AND ".$_POST['price-max']." ) ";
+            $and = " AND ";
         }else{
             if(isset($_POST['price-max']) && $_POST['price-max'] != ""){
-                $sql .= " AND ( price <= ". $_POST['price-max'] . ")";
+                $sql .= $and . " ( price <= ". $_POST['price-max'] . ")";
+                $and = " AND ";
             }
             if(isset($_POST['price-min']) && $_POST['price-min'] != ""){
-                $sql .= " AND (  price >= ". $_POST['price-min'] . ") ";
-    
+                $sql .= $and . " (  price >= ". $_POST['price-min'] . ") ";
+                $and = " AND ";
             }
         }
         if(isset($_POST['year-min']) && isset($_POST['year-max']) && $_POST['year-min'] != "" && $_POST['year-max'] != ""){
-            $sql.= " AND (  year BETWEEN ".$_POST['year-min']." AND ".$_POST['year-max']." ) ";
+            $sql.= $and . "  (  year BETWEEN ".$_POST['year-min']." AND ".$_POST['year-max']." ) ";
+            $and = " AND ";
         }else{
             if(isset($_POST['year-max']) && $_POST['year-max'] != ""){
-                $sql .= " AND ( year <= ". $_POST['year-max'] . ")";
+                $sql .= $and . " ( year <= ". $_POST['year-max'] . ")";
+                $and = " AND ";
             }
             if(isset($_POST['year-min']) && $_POST['year-min'] != ""){
-                $sql .= " AND (  year >= ". $_POST['year-min'] . ") ";
+                $sql .= $and . "  (  year >= ". $_POST['year-min'] . ") ";
+                $and = " AND ";
     
             }
+            
         }
         if(isset($_POST['edition']) && $_POST['edition'] != "" && $_POST['edition'] != "0"){
-            $sql.= " AND (  edition = ". $_POST['edition'] . ") ";
+            $sql.= $and . "  (  edition = ". $_POST['edition'] . ") ";
         }
+        echo $sql;
         $res = mysqli_query($con, $sql);
         if($res){
             $totalNumberOfBooks = mysqli_num_rows($res);
@@ -116,15 +125,12 @@ include_once "navbar.php";
                 while($row = mysqli_fetch_assoc($res)){
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }
         }
   
-        echo $sql;
-
-
     }else if(isset($_GET['category'])){
         $category = $_GET['category'];
         $category_search = "SELECT category_id FROM category where title  = '$category'";
@@ -143,7 +149,7 @@ include_once "navbar.php";
             while ($row = mysqli_fetch_assoc($res)) {
                 $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                 $index++;
             }
         }  
@@ -161,7 +167,7 @@ include_once "navbar.php";
                 $index = 0;
                 while ($row = mysqli_fetch_assoc($res)) {
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 'price' => $row['price'] , 'book_number' => $row['book_number'],
-                    'description' => $row['description'],'coverImage' => $row['cover_image']];
+                    'description' => $row['description'],'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }  
@@ -204,7 +210,7 @@ include_once "navbar.php";
                 $index = 0;
                 while ($row = mysqli_fetch_assoc($res)) {
                     $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 'price' => $row['price'] , 'book_number' => $row['book_number'],
-                    'description' => $row['description'],'coverImage' => $row['cover_image']];
+                    'description' => $row['description'],'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                     $index++;
                 }
             }  
@@ -221,7 +227,7 @@ include_once "navbar.php";
             while ($row = mysqli_fetch_assoc($res)) {
                 $books[$index] = (object) ['author' => $row['author'], 'title' => $row['title'], 
                     'price' => $row['price'], 'book_number' => $row['book_number'], 'description' => $row['description'],
-                        'coverImage' => $row['cover_image']];
+                        'coverImage' => $row['cover_image'], 'edition' => $row['edition']];
                 $index++;
             }
         } 
@@ -277,7 +283,8 @@ include_once "navbar.php";
                         </div>
                     </div>
                 </header>
-            <div class="row justify-content-center">
+                
+            <div class="row justify-content-center w-100 ">
                 
                 <div class="pl-4 col-2 ">
                     <form action="home.php" method="post">
@@ -289,30 +296,46 @@ include_once "navbar.php";
                             </div>
                             <ul class="p-2 d-flex flex-column  px-3">
                                 <?php foreach($categories as $categoryData){?>
-                                <li><input type="checkbox" name="category[]" value="<?php echo $categoryData['category_id']?>"> <span><?php echo $categoryData['title']?></span></li>
-                                <?php } ?>
+                                <li><input type="checkbox" 
+                                    <?php if(isset($_POST['filter']) && isset($_POST['category']) 
+                                             && in_array($categoryData['category_id'], $_POST['category'])){
+                                        echo "checked";
+                                    }?>
+                                     name="category[]" value="<?php echo $categoryData['category_id']?>"> <span><?php echo $categoryData['title']?></span></li>
+                                <?php $i++; } ?>
                             </ul>
                         </div>
                         <div class="border-bottom p-3">
                             <label class="control-label">Price Range:</label>
                             <div class="d-flex" >
-                                <input type="text" name="price-min" class="form-control"  placeholder="Min"> 
-                                <input type="text" name="price-max" class="form-control"  placeholder="Max">
+                                <input type="text"  name="price-min" class="form-control"  placeholder="Min"
+                                    value="<?php echo (isset($_POST['price-min']) ? $_POST['price-min'] : "") ;?>" 
+                                > 
+                                <input type="text" name="price-max" class="form-control"  placeholder="Max"
+                                    value="<?php echo (isset($_POST['price-max']) ? $_POST['price-max'] : "") ;?>" 
+                                >
                             </div>
                             
                         </div>
                         <div class="border-bottom p-3">
                             <label class="control-label">Publishing year:</label>
                             <div class="d-flex" >
-                                <input type="text" name="year-min" class="form-control w-50"  placeholder="Min-Year"> 
-                                <input type="text" name="year-max" class="form-control w-50"  placeholder="Max-Year">
+                                <input type="text" name="year-min" class="form-control w-50"  placeholder="Min-Year"
+                                    value="<?php echo (isset($_POST['year-min']) ? $_POST['year-min'] : "") ;?>" 
+                                > 
+                                <input type="text" name="year-max" class="form-control w-50"  placeholder="Max-Year"
+                                    value="<?php echo (isset($_POST['year-max']) ? $_POST['year-max'] : "") ;?>" 
+                                >
                             </div>
                         </div>  
                         <div class="border-bottom p-3">
                             <label class="control-label">Edition:</label>
                             <div class="d-flex" >
-                                <input type="range" value="0" min="0" max="10" name="edition"  oninput="this.nextElementSibling.value = this.value">
-                                <output class="mx-5" >0</output>
+                                <input type="range" min="0" max="10" name="edition"  oninput="this.nextElementSibling.value = this.value"
+                                    value="<?php echo (isset($_POST['edition']) ? $_POST['edition'] : "0") ;?>"
+                                
+                                >
+                                <output class="mx-5" ><?php echo (isset($_POST['edition']) ? $_POST['edition'] : "0") ;?></output>
                             </div>
                         </div>  
 
@@ -333,39 +356,50 @@ include_once "navbar.php";
                                 echo "<h3 class='text-center m-5'>No books found for 'advanced search' </h3>";
                             }
                         }
+                        if(isset($_POST['filter'])){
+                            if(count($books) == 0){
+                                echo "<h3 class='text-center m-5'>No books found </h3>";
+                            }
+                        }
+                        if(isset($_GET['category'])){
+                            if(count($books) == 0){
+                                echo "<h3 class='text-center m-5'>No books found for '". ucfirst($_GET['category']) ."' </h3>";
+                            }
+                        }
                         
                         
                         for($i= 0; $i < count($books); $i++){ ?>
                         
                         <div class="col-4 my-2">
-                            <div class="card product-item">
+                            <div class="w-100">
                                 <!-- Product image-->
-                                <img class=" card-image book-cover " src="<?php echo $books[$i]->coverImage ?>" width="350" height="400" alt="...">
+                                <div class="w-100">
+                                    <img src="<?php echo $books[$i]->coverImage; ?>" class="w-100" alt="">
+                                </div>
                                 <!-- Product details-->
                                 <div class="card-body">
-                                    <div class="">
-                                        <!-- Product name-->
-                                        <h5 class="fw-bolder"> <?php echo $books[$i]->title ?> 
-                                           
-                                        <span> <?php  $averageRating = $books[$i]->rating; ?>
+                                   
+                                    <h4 class="fw-bolder mt-2"> <?php echo $books[$i]->title ?>  </h4>
+                                    <span> <?php  $averageRating = $books[$i]->rating; ?>
 
-                                            <div class="d-flex"> 
-                                            <?php for($j = 0; $j < floor($averageRating); $j++){  ?>
-                                                <span class="fa fa-star star-active ml-3"></span>
-                                                <?php }for($j = 0; $j < 5-floor($averageRating); $j++){ ?>
-                                                    <span class="fa fa-star star-inactive ml-3"></span>
-                                                <?php }?>
-                                            </div>
-                                        
-                                        
-                                        </span>
+                                        <div class="d-flex"> 
+                                        <?php for($j = 0; $j < floor($averageRating); $j++){  ?>
+                                            <span class="fa fa-star star-active ml-3"></span>
+                                            <?php }for($j = 0; $j < 5-floor($averageRating); $j++){ ?>
+                                                <span class="fa fa-star star-inactive ml-3"></span>
+                                            <?php }?>
+                                        </div>
                                     
-                                        </h5>
-                                        <!-- Product price-->
-                                        <span><b>Price: </b><strong><?php echo $books[$i]->price * $_SESSION['rate'] ."</strong> ". $_SESSION['currency'] ?> </span>
-                                    </div>
-                                    <p class="m-0"><small><?php echo $books[$i]->author ?></small></p>
-                                    <p class="m-0"><small>ISBN: <?php echo $books[$i]->book_number ?></small></p>
+                                    
+                                    </span>
+                                
+                                    </h5>
+                                    <!-- Product price-->
+                                    <span><b>Price: </b><strong><?php echo $books[$i]->price * $_SESSION['rate'] ."</strong> ". $_SESSION['currency'] ?> </span>
+                                  
+                                    <p class="m-0">Edition: <?php echo $books[$i]->edition ?></p>
+                                    <p class="m-0">By: <?php echo $books[$i]->author ?></p>
+                                    <p class="m-0"><small>ISBN:  <?php echo $books[$i]->book_number ?></p></small>
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer  pt-0 border-top-0 bg-transparent">
