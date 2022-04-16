@@ -46,8 +46,8 @@
                 <div class="card rounded-0">
                     <div class="card-body">
                         <div class="w-100 justify-content-between d-flex">
-                            <h4><b>Orders</b></h4>
-                            <a href="./edit.php" class="btn btn btn-dark btn-flat"><div class="fa fa-user-cog"></div> Manage Account</a>
+            
+                            <a href="buys.php?order_id=<?php echo  $order['order_id']?>" class="btn btn-outline-primary">Order:  <?php echo $order_id ?></a>
                         </div>
                             <hr class="border-warning">
                             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_0_length">
