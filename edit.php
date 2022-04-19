@@ -89,6 +89,10 @@
                                         <input type="text" name="email" class="form-control form w-100" disabled value="<?php echo $email;?>" required="">
                                     </div>
                                     <div class="form-group">
+                                        <label for="password" class="control-label" >Current Password</label>
+                                        <input type="password" name="current_password" id="current_password" class="form-control form"  placeholder="Enter current password" required>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="password" class="control-label" >New Password</label>
                                         <input type="password" name="password" id="password" class="form-control form"  placeholder="Enter value to change password" required>
                                     </div>
@@ -97,7 +101,7 @@
                                         <input type="password" name="cpassword" id="cpassword" class="form-control form" placeholder="Enter value to change password" required>
                                     </div>
                                     <div>
-                                        <p id="pass-error-message"></p>
+                                        <p id="pass-error-message"><?php echo implode($errors);?></p>
                                     </div>
                                         
                                     
