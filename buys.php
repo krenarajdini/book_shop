@@ -47,7 +47,7 @@
                     <div class="card-body">
                         <div class="w-100 justify-content-between d-flex">
             
-                            <a href="buys.php?order_id=<?php echo  $order['order_id']?>" class="btn btn-outline-primary">Order:  <?php echo $order_id ?></a>
+                            <a href="buys.php?order_id=<?php echo  $order_id?>" class="btn btn-outline-primary">Order:  <?php echo $order_id ?></a>
                         </div>
                             <hr class="border-warning">
                             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="DataTables_Table_0_length">
@@ -83,7 +83,7 @@
                                     <tr>
                                         <td colspan="5" class="text-right"><b>Total</b>
                                         <span>(include tax 10%)</span>
-                                                    <?php echo floor($total * $_SESSION['rate'] * 100) / 100 .' ' . $_SESSION['currency']?>
+                                        <?php echo $total * $_SESSION['rate'] + $total * $_SESSION['rate'] * 0.1 .' '. $_SESSION['currency']  ?>
                                         </td>
                                         
                                     </tr>
