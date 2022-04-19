@@ -93,7 +93,7 @@
                                         <input type="password" name="password" id="password" class="form-control form"  placeholder="Enter value to change password" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="cpassword" class="control-label">Current Password</label>
+                                        <label for="cpassword" class="control-label">Confirm Password</label>
                                         <input type="password" name="cpassword" id="cpassword" class="form-control form" placeholder="Enter value to change password" required>
                                     </div>
                                     <div>

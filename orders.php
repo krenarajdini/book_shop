@@ -25,8 +25,8 @@
             $date = date("Y-m-d");
             $time = date("H:i:s");
             $shipment_address = $_SESSION['shipment_address'];
-            //generate random order id with letter and numbers
-            $transaction_id = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 20);
+            //generate random order id with numbers
+            $transaction_id = substr(str_shuffle("0123456789"), 0, 10);
 
             //Insert into database
             $sql = "INSERT INTO orders(transaction_id, u_id, shipment_address, total, date, time, order_status) 
