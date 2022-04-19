@@ -101,7 +101,7 @@
                                         <input type="password" name="cpassword" id="cpassword" class="form-control form" placeholder="Enter value to change password" required>
                                     </div>
                                     <div>
-                                        <p id="pass-error-message"><?php echo implode($errors);?></p>
+                                        <p id="pass-error-message" class="pass-error-message" style="color:red;"><?php echo implode($errors);?></p>
                                     </div>
                                         
                                     
