@@ -198,10 +198,39 @@
                         </div>
                     </div>
                      <?php } ?>
-                                <div class="d-flex w-100 justify-content-between mb-2 py-2 border-bottom">
-                    <div class="col-8 d-flex justify-content-end align-items-center"><h4>Grand Total:</h4> <span>(include tax 10%: <?php echo $total_price * $_SESSION['rate'] * 0.1?>)</span></div>
-                    <div class="col d-flex justify-content-end"><h4 id="grand-total"><?php echo $total_price * $_SESSION['rate'] .' '. $_SESSION['currency']?></h4></div>
-                </div>
+                    <div class="d-flex w-100 justify-content-between">
+                        <div class="col-8 d-flex justify-content-end align-items-center">
+                            <p class="m-0 text-success">Subtotal:</p>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <p class="m-0 text-success">
+                                <?php echo $total_price * $_SESSION['rate'] .' '. $_SESSION['currency']?>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex w-100 justify-content-between mb-2  border-bottom">
+
+                        <div class="col-8 d-flex justify-content-end align-items-center">
+                                <p class="m-0 text-info">Tax 10%:</p>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <p class="m-0 text-info">
+                                <?php echo $total_price * $_SESSION['rate'] * 0.1 .' '. $_SESSION['currency'] ?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex w-100 justify-content-between mb-2 py-2 border-bottom">
+                        <div class="col-8 d-flex justify-content-end align-items-center">
+                            <h4>Grand Total:</h4>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <h4 id="grand-total">
+                                <?php echo $total_price * $_SESSION['rate'] + $total_price * $_SESSION['rate'] * 0.1 .' '. $_SESSION['currency']  ?>
+                            </h4>
+                        </div>
+                    
+                    </div>
             </div>
         </div>
         <div class="d-flex w-100 justify-content-end">
