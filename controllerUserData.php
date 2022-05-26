@@ -254,27 +254,30 @@ if(isset($_POST['signup'])){
     }
 
     //if user click change password button
-    if(isset($_POST['change-password'])){
+    if (isset($_POST['change-password'])) {
         $_SESSION['info'] = "";
         $password = mysqli_real_escape_string($con, $_POST['password']);
         $cpassword = mysqli_real_escape_string($con, $_POST['cpassword']);
-        if($password !== $cpassword){
+        if ($password !== $cpassword) {
             $errors['password'] = "Confirm password not matched!";
-        }else{
+        } else {
             $code = 0;
             $email = $_SESSION['email']; //getting this email using session
-            $encpass = password_hash($password, PASSWORD_BCRYPT);
-            $update_pass = "UPDATE user SET code = $code, password = '$encpass' WHERE email = '$email'";
+            $salt = hash('sha256', rand());
+            $encpass = hash('sha256', $salt . $password);
+            $update_pass = "UPDATE user SET password = '$encpass', salt = '$salt', code = $code WHERE email = '$email'";
             $run_query = mysqli_query($con, $update_pass);
-            if($run_query){
-                $info = "Your password changed. Now you can login with your new password.";
+            if ($run_query) {
+                $info = "Password changed successfully!";
                 $_SESSION['info'] = $info;
-                header('Location: password-changed.php');
-            }else{
-                $errors['db-error'] = "Failed to change your password!";
+                header('location: password-changed.php');
+                exit();
+            } else {
+                $errors['db-error'] = "Something went wrong!";
             }
         }
     }
+    
     
     
         

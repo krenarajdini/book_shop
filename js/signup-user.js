@@ -122,7 +122,9 @@ passElement.onkeyup = function () {
 
   if (
     pass == confirmPass &&
-    new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(pass)
+    new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+      pass
+    )
   ) {
     passElement.classList.remove("error-element");
     confirmPassElement.classList.remove("error-element");
@@ -130,12 +132,14 @@ passElement.onkeyup = function () {
     passErrorMessageElement.classList.remove("error-message");
   } else if (
     pass != confirmPass ||
-    !new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(pass)
+    !new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+      pass
+    )
   ) {
     passElement.classList.add("error-element");
     confirmPassElement.classList.add("error-element");
     passErrorMessageElement.innerHTML =
-      "<p>Password must have:</p> <p>6 to 20 characters</p> <p>contain at least one numeric digit</p>" +
+      "<p>Password must have:</p> <p> Min 8 characters </p> <p>contain at least a symbol</p> <p> at least one numeric digit</p>" +
       "<p>one uppercase and one lowercase letter</p>";
     passErrorMessageElement.classList.add("error-message");
   }
@@ -147,15 +151,21 @@ confirmPassElement.onkeyup = function () {
   console.log(pass, confirmPass);
   console.log(pass == confirmPass);
   console.log(
-    new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
+    new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+      confirmPass
+    )
   );
   console.log(
     pass == confirmPass &&
-      new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
+      new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+        confirmPass
+      )
   );
   if (
     pass == confirmPass &&
-    new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
+    new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+      confirmPass
+    )
   ) {
     confirmPassElement.classList.remove("error-element");
     passElement.classList.remove("error-element");
@@ -163,12 +173,14 @@ confirmPassElement.onkeyup = function () {
     passErrorMessageElement.classList.remove("error-message");
   } else if (
     pass != confirmPass ||
-    !new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).test(confirmPass)
+    !new RegExp(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/).test(
+      confirmPass
+    )
   ) {
     confirmPassElement.classList.add("error-element");
     passElement.classList.add("error-element");
     passErrorMessageElement.innerHTML =
-      "<p>Password must have:</p> <p>6 to 20 characters</p> <p>contain at least one numeric digit</p>" +
+      "<p>Password must have:</p> <p> Min 8 characters </p> <p>contain at least a symbol</p> <p> at least one numeric digit</p>" +
       "<p>one uppercase and one lowercase letter</p>";
 
     passErrorMessageElement.classList.add("error-message");
