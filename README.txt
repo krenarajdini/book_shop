@@ -15,5 +15,3 @@ Create a new database naming online_book_shop_db.
 Import the provided SQL file. The file is known as db-schema.sql located inside the root folder.
 Browse the Online Book Shop in a browser. i.e. http://localhost/online_book_shop
 
-
-sign up verification code you will find into table user to mysql db. 
