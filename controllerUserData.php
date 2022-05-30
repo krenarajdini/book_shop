@@ -92,6 +92,10 @@ if(isset($_POST['signup'])){
         $insert_data = "INSERT INTO account (user_name, sold_number, hash_password, u_id)
         values('$user_name', 0, '$encpass', '$u_id' )";
         $data_check = mysqli_query($con, $insert_data);
+        //create cart for user in db
+        $insert_data = "INSERT INTO cart (u_id) values('$u_id' )";
+        $data_check = mysqli_query($con, $insert_data);
+        
         if($data_check){
             $subject = "Email Verification Code";
             $message = "Your verification code is $code";
@@ -109,12 +113,10 @@ if(isset($_POST['signup'])){
         }else{
             $errors['db-error'] = "Failed while inserting data into database!";
         }
-        //create cart for user in db
-        $insert_data = "INSERT INTO cart (u_id) values('$u_id' )";
-        $data_check = mysqli_query($con, $insert_data);
+        
     }
 
-}
+} 
 
 
 
